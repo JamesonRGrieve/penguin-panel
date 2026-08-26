@@ -57,6 +57,35 @@ in-container `penguin-agent` for console/SFTP/stats/backups). Panel's slice is t
 four bullets above. The companion `penguin-wings` repo's `CLAUDE.md` holds the
 full daemon architecture and the phase plan.
 
+## Phase 4 — Panel LXC support (design)
+
+The Panel is **backend-agnostic**: a Node's connection fields (`fqdn`, `scheme`,
+`daemon_token`, `daemon_listen`) point at a **Wings** instance, and the Proxmox
+connection (endpoint/token/node/storage/bridge/template) lives entirely in
+**Wings' config** (`proxmox.*`), not the Panel. So the LXC backend works with **no
+Panel schema change** for basic operation — the same server/egg/allocation model
+drives it. Concrete changes, in priority order:
+
+1. **Backend indicator on the Node (optional, informational).** A nullable
+   `backend` enum (`docker`|`lxc`) so the UI can label a node and adjust
+   backend-specific hints. Not required for function (Wings knows its own
+   backend). Migration + Filament field + `fillable`/`casts`.
+2. **Egg → template (deferred).** An egg's `docker_images` map is currently
+   ignored by the LXC backend, which uses the configured base template
+   (`proxmox.template`) and runs the egg install inside. To let an egg pick its
+   own base template, add an optional `lxc_template` field and honor it in Wings'
+   `serverToLXCSpec`. Until then the config default is used.
+3. **Allocation → static per-LXC IP (deferred).** `allocations` carry only
+   `ip`/`port`/`ip_alias` — no gateway or mask — so the LXC backend uses **DHCP**.
+   For static per-LXC addressing, add `gateway` + `cidr`/`prefix` to the
+   allocation (migration + model + form) and map the default allocation to
+   `LXCSpec.IPv4` (CIDR + gateway) in `serverToLXCSpec` instead of DHCP.
+
+**Implementation is gated on a Panel dev environment** (PHP + `composer install`
++ a database) to run the migrations, Filament forms, and PHPUnit suite — these
+must not ship unverified. `php`/`composer`/`vendor/` are absent in the current
+workspace.
+
 ## Open / parked decisions (shared)
 
 - **Penguin git remote/hosting** — undecided; only `upstream` is wired.
