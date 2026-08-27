@@ -162,21 +162,18 @@ class Settings extends Page implements HasSchemas
             TextInput::make('APP_NAME')
                 ->label(trans('admin/setting.general.app_name'))
                 ->required()
-                ->default(env('APP_NAME', 'Pelican')),
+                ->default(env('APP_NAME', 'Penguin')),
             Group::make()
                 ->columns(2)
                 ->schema([
                     TextInput::make('APP_LOGO')
                         ->label(trans('admin/setting.general.app_logo'))
                         ->hintIcon(TablerIcon::QuestionMark, trans('admin/setting.general.app_logo_help'))
-                        ->default(env('APP_LOGO'))
-                        ->placeholder('/pelican.svg'),
+                        ->default(env('APP_LOGO')),
                     TextInput::make('APP_FAVICON')
                         ->label(trans('admin/setting.general.app_favicon'))
                         ->hintIcon(TablerIcon::QuestionMark, trans('admin/setting.general.app_favicon_help'))
-                        ->required()
-                        ->default(env('APP_FAVICON', '/pelican.ico'))
-                        ->placeholder('/pelican.ico'),
+                        ->default(env('APP_FAVICON')),
                 ]),
             Group::make()
                 ->columns(2)

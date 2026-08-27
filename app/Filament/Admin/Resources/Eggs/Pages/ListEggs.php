@@ -39,9 +39,13 @@ class ListEggs extends ListRecords
      */
     public function table(Table $table): Table
     {
-        $defaultEggIcon = config('app.logo');
-        $defaultEggIcon = empty($defaultEggIcon) || !is_file(public_path($defaultEggIcon)) ? 'pelican.svg' : $defaultEggIcon;
-        $defaultEggIcon = 'data:image/svg+xml;base64,' . base64_encode(file_get_contents(public_path($defaultEggIcon)));
+        // No bundled brand image ships with Penguin: use a configured app logo
+        // when one is present, otherwise fall back to no default icon (an egg
+        // without its own icon simply renders none).
+        $configuredLogo = config('app.logo');
+        $defaultEggIcon = ! empty($configuredLogo) && is_file(public_path($configuredLogo))
+            ? 'data:image/svg+xml;base64,' . base64_encode(file_get_contents(public_path($configuredLogo)))
+            : null;
 
         return $table
             ->defaultPaginationPageOption(25)
