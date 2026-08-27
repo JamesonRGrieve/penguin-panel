@@ -4,7 +4,7 @@ return [
 
     'name' => env('APP_NAME', 'Penguin'),
     'logo' => env('APP_LOGO'),
-    'favicon' => env('APP_FAVICON', '/pelican.ico'),
+    'favicon' => env('APP_FAVICON'),
 
     'version' => 'canary',
 

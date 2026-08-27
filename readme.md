@@ -1,5 +1,3 @@
-<img width="20%" src="public/pelican.svg" alt="logo">
-
 # Penguin Panel
 
 **Fly High, Game On: Penguin's pledge for unrivaled game servers.**

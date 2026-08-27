@@ -193,14 +193,11 @@ class Settings extends Page implements HasSchemas
                     TextInput::make('APP_LOGO')
                         ->label(trans('admin/setting.general.app_logo'))
                         ->hintIcon(TablerIcon::QuestionMark, trans('admin/setting.general.app_logo_help'))
-                        ->default(config('app.logo'))
-                        ->placeholder('/pelican.svg'),
+                        ->default(config('app.logo')),
                     TextInput::make('APP_FAVICON')
                         ->label(trans('admin/setting.general.app_favicon'))
                         ->hintIcon(TablerIcon::QuestionMark, trans('admin/setting.general.app_favicon_help'))
-                        ->required()
-                        ->default(config('app.favicon'))
-                        ->placeholder('/pelican.ico'),
+                        ->default(config('app.favicon')),
                 ]),
             Group::make()
                 ->columns(2)
