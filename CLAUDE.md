@@ -43,6 +43,14 @@ Keep these as a thin, isolated layer over upstream to preserve clean rebases.
 - License stays **AGPL-3.0** (`license` file — already AGPL upstream, no
   relicense needed). Add Penguin + Pelican attribution in the README during the
   rebrand; new source files carry an SPDX AGPL header.
+- **Branding: text-only "Penguin", no image branding.** The bundled pelican logo
+  and favicon (`public/pelican.svg` / `.ico`) are removed; brand logo/favicon are
+  optional (`config('app.logo')` / `app.favicon`, unset by default → the text app
+  name renders and no favicon ships). Egg rows fall back to *no* default icon when
+  no `app.logo` is configured. Residual upstream *text*/path references to
+  "pelican" in `.github/`, the `Dockerfile`s, and CLAUDE.md attribution are
+  intentional (upstream project links / rebase-noise avoidance), not brand
+  imagery.
 
 ## Quality gates (workspace §8)
 
@@ -76,11 +84,20 @@ drives it. Concrete changes, in priority order:
    (`EnsureOCIImage`, idempotent) and creates the LXC from it. No `lxc_template`
    field and no per-egg config is needed; the image carries its own runtime and
    non-root user.
-3. **Allocation → static per-LXC IP (deferred).** `allocations` carry only
-   `ip`/`port`/`ip_alias` — no gateway or mask — so the LXC backend uses **DHCP**.
-   For static per-LXC addressing, add `gateway` + `cidr`/`prefix` to the
-   allocation (migration + model + form) and map the default allocation to
-   `LXCSpec.IPv4` (CIDR + gateway) in `serverToLXCSpec` instead of DHCP.
+3. **Allocation → static per-LXC IP (done, no Panel schema change).** The default
+   allocation's `ip` becomes the CT's **static IP** in Wings' `serverToLXCSpec`
+   (the gateway comes from Wings' `proxmox.gateway` config and a default prefix is
+   applied; DHCP is the fallback when no gateway is set). So the existing
+   `ip`/`port` allocation model is sufficient — no `gateway`/`cidr` columns were
+   needed. **Caveat (ops):** on a shared/live bridge the allocation `ip` and the
+   node `fqdn` must be genuinely-free addresses — a collision shows up indirectly
+   as a Panel↔Wings `ConnectionException` or the game port never binding, not as a
+   duplicate-IP error (see `penguin-wings/CLAUDE.md` → *Realization gotchas*).
+
+**Launch semantics.** Creating a server installs it; pass `start_on_completion:
+true` on the create (a standard Pelican application-API field) for Wings to boot
+the run-script entrypoint straight into the game once install finishes — the
+faithful "create and start" end-user flow.
 
 **Implementation is gated on a Panel dev environment** (PHP + `composer install`
 + a database) to run the migrations, Filament forms, and PHPUnit suite — these
@@ -89,7 +106,9 @@ workspace.
 
 ## Open / parked decisions (shared)
 
-- **Penguin git remote/hosting** — undecided; only `upstream` is wired.
+- **Penguin git remote/hosting** — `origin` =
+  `github.com/JamesonRGrieve/penguin-panel` (push target); `upstream` =
+  `pelican-dev/panel` for clean rebases.
 - **PDM (Proxmox Datacenter Manager)** — documented target, **parked**; v1 is
   PVE-only via `bpg/proxmox`.
 - **User-visible rebrand** — deferred until after the Wings Phase 1 technical
