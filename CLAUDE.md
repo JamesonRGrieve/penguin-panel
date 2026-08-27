@@ -26,9 +26,10 @@ the Docker→LXC shift touches it lightly:
 - **Node target type.** A node points at a **Proxmox target** — the PVE node API
   now (PDM parked) — authenticated by an **API token**, replacing a
   Docker/Wings-on-host node.
-- **Egg / image semantics.** An egg's Docker image reference becomes a **base LXC
-  template + install steps** (run by Wings as atomic Ansible). The egg install
-  contract is *adapted*, not the egg ecosystem discarded.
+- **Egg / image semantics.** An egg's Docker image reference becomes the **LXC's
+  OCI base image** — Wings pulls it onto the node (PVE 9.1+ OCI application
+  container) and the egg's install script + startup command run against it. The
+  egg install contract is *adapted*, not the egg ecosystem discarded.
 - **Allocations.** Map to a **per-LXC bridged IP**, not host port publishing.
 - **Panel stays the source of truth** for servers; Wings holds the Tofu state
   (one workspace per server).
@@ -52,16 +53,16 @@ the pre-commit hook wired at bootstrap; coverage/typing ratchets never regress.
 ## Where Penguin work sits
 
 ~90% of the Docker→LXC work is in **Penguin Wings** (the container-runtime
-rearchitecture: embedded Tofu, `bpg/proxmox`, persistent-LXC lifecycle, the
-in-container `penguin-agent` for console/SFTP/stats/backups). Panel's slice is the
-four bullets above. The companion `penguin-wings` repo's `CLAUDE.md` holds the
-full daemon architecture and the phase plan.
+rearchitecture: embedded Tofu, `bpg/proxmox`, persistent-LXC lifecycle from the
+egg's OCI image, and PVE-native console/metrics — no in-container agent). Panel's
+slice is the four bullets above. The companion `penguin-wings` repo's `CLAUDE.md`
+holds the full daemon architecture and the phase plan.
 
 ## Phase 4 — Panel LXC support (design)
 
 The Panel is **backend-agnostic**: a Node's connection fields (`fqdn`, `scheme`,
 `daemon_token`, `daemon_listen`) point at a **Wings** instance, and the Proxmox
-connection (endpoint/token/node/storage/bridge/template) lives entirely in
+connection (endpoint/token/node/storage/image_storage/bridge) lives entirely in
 **Wings' config** (`proxmox.*`), not the Panel. So the LXC backend works with **no
 Panel schema change** for basic operation — the same server/egg/allocation model
 drives it. Concrete changes, in priority order:
@@ -70,11 +71,11 @@ drives it. Concrete changes, in priority order:
    `backend` enum (`docker`|`lxc`) so the UI can label a node and adjust
    backend-specific hints. Not required for function (Wings knows its own
    backend). Migration + Filament field + `fillable`/`casts`.
-2. **Egg → template (deferred).** An egg's `docker_images` map is currently
-   ignored by the LXC backend, which uses the configured base template
-   (`proxmox.template`) and runs the egg install inside. To let an egg pick its
-   own base template, add an optional `lxc_template` field and honor it in Wings'
-   `serverToLXCSpec`. Until then the config default is used.
+2. **Egg → OCI image (done in Wings, no Panel change).** The LXC backend uses the
+   egg's `docker_image` directly as the container's OCI base — Wings pulls it
+   (`EnsureOCIImage`, idempotent) and creates the LXC from it. No `lxc_template`
+   field and no per-egg config is needed; the image carries its own runtime and
+   non-root user.
 3. **Allocation → static per-LXC IP (deferred).** `allocations` carry only
    `ip`/`port`/`ip_alias` — no gateway or mask — so the LXC backend uses **DHCP**.
    For static per-LXC addressing, add `gateway` + `cidr`/`prefix` to the
