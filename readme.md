@@ -20,6 +20,38 @@ Use Penguin if you want:
 - Support for Minecraft, SteamCMD games, databases, bots, voice servers, and more
 - A free, open-source panel suitable for personal servers, communities, and hosting providers
 
+## Installation
+
+Penguin Panel is a Laravel 13 application (PHP 8.3–8.5) that runs **directly in a
+Proxmox LXC** — that is the whole point of Penguin, replacing Pelican's Docker
+model. A fresh checkout has **no `vendor/` directory**, so you must install its PHP
+dependencies before `artisan` or the web UI will run. Skipping that is what
+produces:
+
+> `Failed opening required '.../vendor/autoload.php'`
+
+### Deploy into a Proxmox LXC
+
+In the LXC (Debian/Ubuntu base with PHP 8.3+, Composer, a web server, and
+MariaDB/PostgreSQL + Redis reachable), from the panel's install directory:
+
+```sh
+composer install --no-dev --optimize-autoloader   # creates vendor/autoload.php
+cp .env.example .env
+php artisan key:generate --force
+chown -R www-data:www-data storage bootstrap/cache
+```
+
+Point the web server's document root at `public/`, then complete database and admin
+setup through the panel's first-run installer. Configure a queue worker and run the
+scheduler (`php artisan schedule:run` each minute) as for any Laravel app. Penguin
+tracks Pelican's server/database/Redis configuration where it is unchanged; the full
+guide lives at <https://pengwings.dev/docs>.
+
+> The `Dockerfile` and `compose*.yml` in this repo are inherited from upstream
+> Pelican and retained only for clean rebases — **Docker is not the Penguin
+> deployment path.**
+
 ## Support
 
 * [Read the documentation](https://pengwings.dev/docs)
