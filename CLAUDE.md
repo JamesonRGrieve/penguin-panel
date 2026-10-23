@@ -7,7 +7,7 @@ Docker. AGPL-3.0-or-later (unchanged from upstream).
 
 > Read the workspace `/home/jameson/Source/CLAUDE.md` and the user tenets first.
 > PHP/Laravel follows this repo's own `pint.json` + `phpstan.neon`; TS/JS (vite
-> assets) → `/home/jameson/Source/ai-prompts/typescript.md`. This file wins on
+> assets) → SOP *Stack Standards → TypeScript and JavaScript*. This file wins on
 > Penguin specifics.
 
 ## Product shape
