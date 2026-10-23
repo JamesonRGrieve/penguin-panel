@@ -52,11 +52,11 @@ Keep these as a thin, isolated layer over upstream to preserve clean rebases.
   intentional (upstream project links / rebase-noise avoidance), not brand
   imagery.
 
-## Quality gates (workspace §8)
+## Quality gates (SOP → *Code Quality and Testing*)
 
 Pint (format check), PHPStan (static analysis), PHPUnit (full suite) all green via
 the pre-commit hook wired at bootstrap; coverage/typing ratchets never regress.
-`--no-verify` forbidden without explicit authorization.
+`--no-verify` only under the batch-work rule (SOP → *Git and Commits*).
 
 ## Where Penguin work sits
 
