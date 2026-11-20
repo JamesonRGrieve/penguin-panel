@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Penguin">
+  <!-- SPDX-License-Identifier: AGPL-3.0-or-later. Penguin mark: three colours (#1E3A5F navy, #FFFFFF white, #F5A524 amber). -->
+  <g stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" paint-order="stroke">
+    <path fill="#1E3A5F" d="M21 30 C14 25 8 20 3 14 C5 22 11 31 21 39 Z"/>
+    <path fill="#1E3A5F" d="M43 30 C50 25 56 20 61 14 C59 22 53 31 43 39 Z"/>
+    <path fill="#1E3A5F" d="M32 9 C41 9 46 17 46 27 L46 42 C46 51 40 57 32 57 C24 57 18 51 18 42 L18 27 C18 17 23 9 32 9 Z"/>
+  </g>
+  <path fill="#FFFFFF" d="M32 21 C35 18 40 19 40 24 C40 27 39 28 39 31 L39 44 C39 50 36 53 32 53 C28 53 25 50 25 44 L25 31 C25 28 24 27 24 24 C24 19 29 18 32 21 Z"/>
+  <circle fill="#1E3A5F" cx="28.5" cy="24.5" r="1.8"/>
+  <circle fill="#1E3A5F" cx="35.5" cy="24.5" r="1.8"/>
+  <path fill="#F5A524" d="M29 28 L35 28 L32 32.5 Z"/>
+  <ellipse fill="#F5A524" cx="26" cy="58" rx="4.5" ry="2.2"/>
+  <ellipse fill="#F5A524" cx="38" cy="58" rx="4.5" ry="2.2"/>
+</svg>
