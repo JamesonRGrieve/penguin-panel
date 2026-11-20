@@ -43,7 +43,7 @@ class ListEggs extends ListRecords
         // when one is present, otherwise fall back to no default icon (an egg
         // without its own icon simply renders none).
         $configuredLogo = config('app.logo');
-        $defaultEggIcon = ! empty($configuredLogo) && is_file(public_path($configuredLogo))
+        $defaultEggIcon = !empty($configuredLogo) && is_file(public_path($configuredLogo))
             ? 'data:image/svg+xml;base64,' . base64_encode(file_get_contents(public_path($configuredLogo)))
             : null;
 
