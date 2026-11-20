@@ -109,6 +109,7 @@ return [
 
     'update' => [
         // Offer the one-click update on the admin dashboard. Updating with `php artisan p:update` is unaffected.
-        'dashboard_enabled' => env('PANEL_DASHBOARD_UPDATE_ENABLED', true),
+        // Penguin: off by default. The updater installs pelican/panel releases, which would replace this fork.
+        'dashboard_enabled' => env('PANEL_DASHBOARD_UPDATE_ENABLED', false),
     ],
 ];
