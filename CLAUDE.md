@@ -54,9 +54,15 @@ Keep these as a thin, isolated layer over upstream to preserve clean rebases.
 
 ## Quality gates (SOP → *Code Quality and Testing*)
 
-Pint (format check), PHPStan (static analysis), PHPUnit (full suite) all green via
-the pre-commit hook wired at bootstrap; coverage/typing ratchets never regress.
-`--no-verify` only under the batch-work rule (SOP → *Git and Commits*).
+Pint (format check), PHPStan (static analysis), PHPUnit (full suite) all green;
+coverage/typing ratchets never regress. `--no-verify` only under the batch-work
+rule (SOP → *Git and Commits*).
+
+- **`.githooks/pre-commit`** (enable once per clone: `git config core.hooksPath
+  .githooks`) runs `git diff --check`, `php -l` and Pint on staged PHP files.
+- **PHPStan and PHPUnit run on the build runner**, never on the desktop. The
+  runner has no system PHP: the gate job unpacks a static PHP build and
+  Composer into its private job directory.
 
 ## Where Penguin work sits
 
@@ -114,4 +120,14 @@ workspace.
 - **User-visible rebrand** — deferred until after the Wings Phase 1 technical
   proof.
 - **Phase 1 spike Proxmox target** — parked pending an operator-named node.
-- **Pre-commit gates** — not yet wired.
+- **Pre-commit gates** — wired 2026-11-20 (see *Quality gates*).
+
+## Upstream features Penguin overrides
+
+- **One-click updater** (`config/panel.php` → `update.dashboard_enabled`)
+  defaults **off**: the updater installs releases over the install.
+- **Release checks and the updater read `panel.releases.{panel,wings}_repo`**
+  (default `JamesonRGrieve/penguin-{panel,wings}`) instead of upstream's
+  hardcoded `pelican/*`, so they never offer Pelican releases.
+- Still pointing at Pelican services: the Plugin Hub (`plugin.hub_url`), docs
+  links, and the log upload to `logs.pelican.dev` (admin-initiated).
