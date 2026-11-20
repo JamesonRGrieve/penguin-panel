@@ -38,6 +38,8 @@ function updateServiceWithPreflight(array $preflight): PanelUpdateService
 beforeEach(function () {
     cache()->flush();
     config()->set('app.version', '1.0.0');
+    // Penguin ships the dashboard updater off; these tests exercise it, so turn it on.
+    config()->set('panel.update.dashboard_enabled', true);
 
     // The updater keeps its status, locks and backups in storage, keep the install's own out of reach. It stays on
     // the install's filesystem, otherwise workPath() would fall back to a directory in the install itself.
@@ -50,6 +52,11 @@ beforeEach(function () {
 afterEach(function () {
     app()->useStoragePath($this->originalStoragePath);
     File::deleteDirectory($this->updateStoragePath);
+});
+
+it('ships the dashboard updater off in Penguin', function () {
+    // The updater installs releases over the install; Penguin keeps it off unless an admin opts in.
+    expect((require base_path('config/panel.php'))['update']['dashboard_enabled'])->toBeFalse();
 });
 
 it('refuses to update canary builds', function () {
@@ -277,8 +284,10 @@ it('fails the command when preflight fails', function () {
 it('aborts before touching the install when the checksum does not match', function () use ($passingPreflight) {
     $service = updateServiceWithPreflight($passingPreflight);
     Process::fake();
+    // Penguin: the release repository is configurable, so look it up from a non-default one.
+    config(['panel.releases.panel_repo' => 'acme/panel-fork']);
     Http::fake([
-        'api.github.com/repos/pelican/panel/releases/tags/v1.1.0' => Http::response(['assets' => [
+        'api.github.com/repos/acme/panel-fork/releases/tags/v1.1.0' => Http::response(['assets' => [
             ['name' => 'panel.tar.gz', 'browser_download_url' => 'https://github.com/pelican/panel/releases/download/v1.1.0/panel.tar.gz'],
             ['name' => 'checksum.txt', 'browser_download_url' => 'https://github.com/pelican/panel/releases/download/v1.1.0/checksum.txt'],
         ]]),

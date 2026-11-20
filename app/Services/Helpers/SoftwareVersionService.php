@@ -38,7 +38,7 @@ class SoftwareVersionService
 
         if ($release === null) {
             try {
-                $release = Http::timeout(5)->connectTimeout(1)->get("https://api.github.com/repos/pelican/$repo/releases/latest")->throw()->json();
+                $release = Http::timeout(5)->connectTimeout(1)->get('https://api.github.com/repos/' . config("panel.releases.{$repo}_repo") . '/releases/latest')->throw()->json();
                 cache()->put($key, $release, now()->addMinutes(config('panel.cdn.cache_time', 60)));
             } catch (Exception) {
                 $release = 'error';
@@ -59,7 +59,7 @@ class SoftwareVersionService
     public function panelReleaseAssets(string $version): array
     {
         foreach (["v$version", $version] as $tag) {
-            $response = Http::timeout(10)->connectTimeout(5)->get('https://api.github.com/repos/pelican/panel/releases/tags/' . rawurlencode($tag));
+            $response = Http::timeout(10)->connectTimeout(5)->get('https://api.github.com/repos/' . config('panel.releases.panel_repo') . '/releases/tags/' . rawurlencode($tag));
 
             if ($response->notFound()) {
                 continue;

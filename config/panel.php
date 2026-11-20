@@ -107,6 +107,13 @@ return [
         'hub_api_key' => env('PANEL_PLUGIN_HUB_API_KEY'),
     ],
 
+    // Penguin: the GitHub repositories (owner/name) release checks and the updater read.
+    // Upstream hardcodes pelican/panel and pelican/wings, which would offer Pelican releases.
+    'releases' => [
+        'panel_repo' => env('PANEL_RELEASES_PANEL_REPO', 'JamesonRGrieve/penguin-panel'),
+        'wings_repo' => env('PANEL_RELEASES_WINGS_REPO', 'JamesonRGrieve/penguin-wings'),
+    ],
+
     'update' => [
         // Offer the one-click update on the admin dashboard. Updating with `php artisan p:update` is unaffected.
         // Penguin: off by default. The updater installs pelican/panel releases, which would replace this fork.
