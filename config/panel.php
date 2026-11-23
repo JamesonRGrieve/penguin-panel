@@ -114,6 +114,9 @@ return [
         'wings_repo' => env('PANEL_RELEASES_WINGS_REPO', 'JamesonRGrieve/penguin-wings'),
     ],
 
+    // Penguin: the documentation lives at docs.pengwings.dev, not pelican.dev/docs.
+    'docs_url' => env('PANEL_DOCS_URL', 'https://docs.pengwings.dev'),
+
     'update' => [
         // Offer the one-click update on the admin dashboard. Updating with `php artisan p:update` is unaffected.
         // Penguin: off by default. The updater installs pelican/panel releases, which would replace this fork.

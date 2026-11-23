@@ -132,5 +132,10 @@ workspace.
 - **Release checks and the updater read `panel.releases.{panel,wings}_repo`**
   (default `JamesonRGrieve/penguin-{panel,wings}`) instead of upstream's
   hardcoded `pelican/*`, so they never offer Pelican releases.
-- Still pointing at Pelican services: the Plugin Hub (`plugin.hub_url`), docs
-  links, and the log upload to `logs.pelican.dev` (admin-initiated).
+- **Docs links read `panel.docs_url`** (default `https://docs.pengwings.dev`,
+  built from `penguin-web`): the dashboard help and update-guide buttons. Deep
+  links to topics Penguin doesn't change (Wings connection troubleshooting, Wings
+  optional config) stay on `pelican.dev/docs`, matching the diff-docs model.
+  The brochure site at `pengwings.dev` is on the Zephyrex ERP, not in a repo here.
+- Still pointing at Pelican services: the Plugin Hub (`plugin.hub_url`) and the
+  log upload to `logs.pelican.dev` (admin-initiated).
