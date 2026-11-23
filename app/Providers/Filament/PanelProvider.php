@@ -55,6 +55,7 @@ abstract class PanelProvider extends BasePanelProvider
             ->databaseNotifications()
             ->brandName(config('app.name', 'Penguin'))
             ->brandLogo(config('app.logo'))
+            ->darkModeBrandLogo(config('app.logo_dark'))
             ->brandLogoHeight('2rem')
             ->favicon(config('app.favicon'))
             ->topNavigation(function () {

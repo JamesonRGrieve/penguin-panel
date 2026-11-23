@@ -45,11 +45,12 @@ Keep these as a thin, isolated layer over upstream to preserve clean rebases.
   rebrand; new source files carry an SPDX AGPL header.
 - **Branding: the Penguin mark** (operator-approved 2026-11-21, owned by the
   Logo Design agent; source `logos/penguin/final/penguin-logo.svg`). It ships as
-  `public/branding/penguin-logo.svg` and is the default `app.logo` and
-  `app.favicon` (`APP_LOGO`/`APP_FAVICON` still override it). The bundled
-  pelican logo and favicon (`public/pelican.svg` / `.ico`) are removed. Egg rows
-  without an icon show the app logo. The navy mark needs a light ground: there
-  is no dark-mode variant yet, so Filament's dark theme shows it low-contrast.
+  `public/branding/penguin-logo.svg` (default `app.logo`), with
+  `penguin-logo-dark.svg` (default `app.logo_dark` → Filament
+  `darkModeBrandLogo`, only while `APP_LOGO` is unset) and `penguin-favicon.svg`
+  (default `app.favicon`). `APP_LOGO`/`APP_LOGO_DARK`/`APP_FAVICON` override
+  them. The bundled pelican logo and favicon (`public/pelican.svg` / `.ico`) are
+  removed. Egg rows without an icon show the app logo.
   Residual upstream *text*/path references to "pelican" in `.github/`, the
   `Dockerfile`s, and CLAUDE.md attribution are intentional (upstream project
   links / rebase-noise avoidance), not brand imagery.
