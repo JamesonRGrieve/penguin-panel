@@ -39,9 +39,8 @@ class ListEggs extends ListRecords
      */
     public function table(Table $table): Table
     {
-        // No bundled brand image ships with Penguin: use a configured app logo
-        // when one is present, otherwise fall back to no default icon (an egg
-        // without its own icon simply renders none).
+        // Eggs without their own icon show the app logo (the Penguin mark by
+        // default); if APP_LOGO is cleared or missing, they render none.
         $configuredLogo = config('app.logo');
         $defaultEggIcon = !empty($configuredLogo) && is_file(public_path($configuredLogo))
             ? 'data:image/svg+xml;base64,' . base64_encode(file_get_contents(public_path($configuredLogo)))

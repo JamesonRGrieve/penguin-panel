@@ -43,14 +43,16 @@ Keep these as a thin, isolated layer over upstream to preserve clean rebases.
 - License stays **AGPL-3.0** (`license` file — already AGPL upstream, no
   relicense needed). Add Penguin + Pelican attribution in the README during the
   rebrand; new source files carry an SPDX AGPL header.
-- **Branding: text-only "Penguin", no image branding.** The bundled pelican logo
-  and favicon (`public/pelican.svg` / `.ico`) are removed; brand logo/favicon are
-  optional (`config('app.logo')` / `app.favicon`, unset by default → the text app
-  name renders and no favicon ships). Egg rows fall back to *no* default icon when
-  no `app.logo` is configured. Residual upstream *text*/path references to
-  "pelican" in `.github/`, the `Dockerfile`s, and CLAUDE.md attribution are
-  intentional (upstream project links / rebase-noise avoidance), not brand
-  imagery.
+- **Branding: the Penguin mark** (operator-approved 2026-11-21, owned by the
+  Logo Design agent; source `logos/penguin/final/penguin-logo.svg`). It ships as
+  `public/branding/penguin-logo.svg` and is the default `app.logo` and
+  `app.favicon` (`APP_LOGO`/`APP_FAVICON` still override it). The bundled
+  pelican logo and favicon (`public/pelican.svg` / `.ico`) are removed. Egg rows
+  without an icon show the app logo. The navy mark needs a light ground: there
+  is no dark-mode variant yet, so Filament's dark theme shows it low-contrast.
+  Residual upstream *text*/path references to "pelican" in `.github/`, the
+  `Dockerfile`s, and CLAUDE.md attribution are intentional (upstream project
+  links / rebase-noise avoidance), not brand imagery.
 
 ## Quality gates (SOP → *Code Quality and Testing*)
 

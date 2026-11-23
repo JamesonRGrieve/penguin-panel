@@ -3,8 +3,8 @@
 return [
 
     'name' => env('APP_NAME', 'Penguin'),
-    'logo' => env('APP_LOGO'),
-    'favicon' => env('APP_FAVICON'),
+    'logo' => env('APP_LOGO', '/branding/penguin-logo.svg'),
+    'favicon' => env('APP_FAVICON', '/branding/penguin-logo.svg'),
 
     'version' => 'canary',
 
